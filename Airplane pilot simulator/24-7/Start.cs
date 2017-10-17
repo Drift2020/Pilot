@@ -59,20 +59,18 @@ namespace _24_7
             Console.WriteLine("1. Start simulator\nEsc. Exit");
         }
 
-        void Start_Simulator()
+        static void Start_Simulator()
         {
-
+            Console.Write("Please, enter name ferst Dispatcher:");
+            Console.ReadLine();
         }
         static void Menu(ConsoleKey key)
         {
             switch (key)
             {
                 case ConsoleKey.D1:
-
-                    break;
-                case ConsoleKey.D2:
-
-                    break;
+                    Start_Simulator();
+                    break;              
                 default:
                     Console.Clear();
                     Print_Start_Menu();
