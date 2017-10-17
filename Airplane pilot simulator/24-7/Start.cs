@@ -81,6 +81,7 @@ namespace _24_7
 
         public static void Main()
         {
+
             Print_Start_Menu();
             ConsoleKey key;
             do
