@@ -14,7 +14,14 @@ namespace _24_7
 
         Dispatcher():this("Elva",150)
         {
+          
+        }
 
+        Dispatcher(string Name)
+        {
+            Random t = new Random();
+            this.Name = Name;
+            N = t.Next(-200, 200);
         }
         Dispatcher(string Name, int N)
         {

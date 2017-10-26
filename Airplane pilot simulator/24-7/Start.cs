@@ -62,7 +62,10 @@ namespace _24_7
         static void Start_Simulator()
         {
             Console.Write("Please, enter name ferst Dispatcher:");
-            Console.ReadLine();
+            string ferst_d=Console.ReadLine();
+
+            Console.Write("Please, enter name second Dispatcher:");
+            string second_d = Console.ReadLine();
         }
         static void Menu(ConsoleKey key)
         {
