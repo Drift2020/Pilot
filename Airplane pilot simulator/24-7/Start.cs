@@ -10,51 +10,43 @@ namespace _24_7
     class Start
     {
         enum Direction { UP, RIGHT, DOWN, LEFT, UP_SHIFT, RIGHT_SHIFT, DOWN_SHIFT, LEFT_SHIFT,NONE };
-
+        static Direction d = Direction.NONE;
         static Aircraft Pilot = new Aircraft();
 
         private static void OnTimer(object sender, ElapsedEventArgs arg /* Предоставляет данные для события Elapsed */)
         {
-            // Prevent example from ending if CTL+C is pressed.
-            Console.TreatControlCAsInput = true;
-
-            ConsoleKey key;
-            ConsoleKeyInfo cki = Console.ReadKey();
-            
-            key = cki.Key;
-
-            switch (key)
+          
+            switch (d)
             {
-                case ConsoleKey.LeftArrow:
-                    if ((cki.Modifiers & ConsoleModifiers.Shift) != 0)
+                case Direction.LEFT_SHIFT:                 
                         Pilot.Speed -= 150;
-                    else
+                    break;
+                case Direction.LEFT:
                         Pilot.Speed -= 50;
                     break;
-                case ConsoleKey.RightArrow:
-                    if ((cki.Modifiers & ConsoleModifiers.Shift) != 0)
+
+                case Direction.RIGHT_SHIFT:                
                         Pilot.Speed += 150;
-                    else
+                    break;
+                case Direction.RIGHT:
                         Pilot.Speed += 50;
                     break;
-                case ConsoleKey.UpArrow:
-                    if ((cki.Modifiers & ConsoleModifiers.Shift) != 0)
+
+                case Direction.UP_SHIFT:                    
                         Pilot.Height += 500;
-                    else
+                    break;
+                case Direction.UP:
                         Pilot.Height += 250;
                     break;
-                case ConsoleKey.DownArrow:
-                    if ((cki.Modifiers & ConsoleModifiers.Shift) != 0)
+
+                case Direction.DOWN_SHIFT:                   
                         Pilot.Height -= 500;
-                    else
+                    break;
+                case Direction.DOWN:
                         Pilot.Height -= 250;
                     break;
-
-
             }
-            
-          
-            
+            d = Direction.NONE;
         }
 
         static void Print_Start_Menu()
@@ -75,18 +67,23 @@ namespace _24_7
             bool menu = true;
             List<Dispatcher> dispatchers = new List<Dispatcher>();
             Print_Start_Menu();
-            ConsoleKey key;
+
+
+            Console.TreatControlCAsInput = true;
+            
 
             Timer t = new Timer();
-            t.Interval = 1;
-            // public event ElapsedEventHandler Elapsed - это событие происходит по истечении интервала времени
+            t.Interval = 100;       
             t.Elapsed += new ElapsedEventHandler(OnTimer);
 
-            
+            ConsoleKey key;
             do
             {
-                ConsoleKeyInfo info = Console.ReadKey();
-                key = info.Key;
+              
+                ConsoleKeyInfo cki = Console.ReadKey();
+                key = cki.Key;
+
+               
                 if (menu)
                 {
                     switch (key)
@@ -94,12 +91,12 @@ namespace _24_7
                         case ConsoleKey.D1:
 
                             Console.Write("Please, enter name ferst Dispatcher:");
-                            string ferst_d = Console.ReadLine();
-                            dispatchers.Add(new Dispatcher(ferst_d));
+                            string disp = (Console.ReadLine());
+                            dispatchers.Add(new Dispatcher(disp));
 
                             Console.Write("Please, enter name second Dispatcher:");
-                            string second_d = Console.ReadLine();
-                            dispatchers.Add(new Dispatcher(second_d));
+                             disp = (Console.ReadLine());
+                            dispatchers.Add(new Dispatcher(disp));
 
                             Pilot.Observation += (new Dis(Disp));
 
@@ -124,7 +121,6 @@ namespace _24_7
                             Console.Write("Please, enter name dispatcher:");
                             string name = Console.ReadLine();
                             dispatchers.Add(new Dispatcher(name));
-
                             break;
                         case ConsoleKey.D2:
                             if (dispatchers.Count > 2)
@@ -148,7 +144,31 @@ namespace _24_7
                                 Console.WriteLine("Min 2 disp, please first add disp.");
                             }
                             break;
-                      
+
+                        case ConsoleKey.LeftArrow:
+                            if ((cki.Modifiers & ConsoleModifiers.Shift) != 0)
+                                d = Direction.LEFT_SHIFT;                           
+                            else
+                                d = Direction.LEFT;
+                            break;
+                        case ConsoleKey.RightArrow:
+                            if ((cki.Modifiers & ConsoleModifiers.Shift) != 0)
+                                d = Direction.RIGHT_SHIFT;
+                            else
+                                d = Direction.RIGHT;
+                            break;
+                        case ConsoleKey.UpArrow:
+                            if ((cki.Modifiers & ConsoleModifiers.Shift) != 0)
+                                d = Direction.UP_SHIFT;
+                            else
+                                d = Direction.UP;
+                            break;
+                        case ConsoleKey.DownArrow:
+                            if ((cki.Modifiers & ConsoleModifiers.Shift) != 0)
+                                d = Direction.DOWN_SHIFT;
+                            else
+                                d = Direction.DOWN;
+                            break;
                     }
 
                     Console.Clear();
