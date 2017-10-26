@@ -9,7 +9,9 @@ namespace _24_7
 {
     class Start
     {
-       static Aircraft Pilot = new Aircraft();
+        enum Direction { UP, RIGHT, DOWN, LEFT, UP_SHIFT, RIGHT_SHIFT, DOWN_SHIFT, LEFT_SHIFT,NONE };
+
+        static Aircraft Pilot = new Aircraft();
 
         private static void OnTimer(object sender, ElapsedEventArgs arg /* Предоставляет данные для события Elapsed */)
         {
@@ -47,54 +49,122 @@ namespace _24_7
                     else
                         Pilot.Height -= 250;
                     break;
+
+
             }
+            
+          
+            
         }
-
-
-
-
 
         static void Print_Start_Menu()
         {
             Console.WriteLine("1. Start simulator\nEsc. Exit");
         }
-
-        static void Start_Simulator()
+        static void Print_Work_Menu()
         {
-            Console.Write("Please, enter name ferst Dispatcher:");
-            string ferst_d=Console.ReadLine();
-
-            Console.Write("Please, enter name second Dispatcher:");
-            string second_d = Console.ReadLine();
+            Console.WriteLine("1. Add disp\n2. Dell disp\nEsc. Exit");
         }
-        static void Menu(ConsoleKey key)
+        static void Info_Air(int speed,int height)
         {
-            switch (key)
-            {
-                case ConsoleKey.D1:
-                    Start_Simulator();
-                    break;              
-                default:
-                    Console.Clear();
-                    Print_Start_Menu();
-                    break;
-            }
-        }
-
-
+            Console.WriteLine("Speed: {0}\nHeight: {1}",speed,height);
+        }      
         public static void Main()
         {
-
+            int ball = 0;
+            bool menu = true;
+            List<Dispatcher> dispatchers = new List<Dispatcher>();
             Print_Start_Menu();
             ConsoleKey key;
+
+            Timer t = new Timer();
+            t.Interval = 1;
+            // public event ElapsedEventHandler Elapsed - это событие происходит по истечении интервала времени
+            t.Elapsed += new ElapsedEventHandler(OnTimer);
+
+            
             do
             {
-
                 ConsoleKeyInfo info = Console.ReadKey();
                 key = info.Key;
-                Menu(key);
+                if (menu)
+                {
+                    switch (key)
+                    {
+                        case ConsoleKey.D1:
 
+                            Console.Write("Please, enter name ferst Dispatcher:");
+                            string ferst_d = Console.ReadLine();
+                            dispatchers.Add(new Dispatcher(ferst_d));
+
+                            Console.Write("Please, enter name second Dispatcher:");
+                            string second_d = Console.ReadLine();
+                            dispatchers.Add(new Dispatcher(second_d));
+
+                            Pilot.Observation += (new Dis(Disp));
+
+                            menu = !menu;
+
+                            Console.Clear();
+                            Print_Work_Menu();
+                            t.Start(); // Начинает вызывать событие Elapsed
+                            break;
+                        default:
+                            Console.Clear();
+                            Print_Start_Menu();
+                            break;
+                    }
+                }
+                else
+                {
+
+                    switch (key)
+                    {
+                        case ConsoleKey.D1:
+                            Console.Write("Please, enter name dispatcher:");
+                            string name = Console.ReadLine();
+                            dispatchers.Add(new Dispatcher(name));
+
+                            break;
+                        case ConsoleKey.D2:
+                            if (dispatchers.Count > 2)
+                            {
+                                for (int i = 0; i < dispatchers.Count; i++)
+                                {
+                                    Console.WriteLine(i + ". " + dispatchers[i].Name);
+                                }
+                                Console.Write("Please, enter number dispatcher for dell:");
+
+                                int number = Int32.Parse(Console.ReadLine());
+
+                                if (number < dispatchers.Count)
+                                {
+                                    ball += dispatchers[number].Score;
+                                    dispatchers.Remove(dispatchers[number]);
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Min 2 disp, please first add disp.");
+                            }
+                            break;
+                      
+                    }
+
+                    Console.Clear();
+                    Print_Work_Menu();
+                    foreach (Dispatcher i in dispatchers)
+                        Pilot.Generator_Event_Observation(i);
+                    Info_Air(Pilot.Speed, Pilot.Height);
+                }
             } while (key!= ConsoleKey.Escape);
         }
+
+        private static void Disp(object air,object disp)
+        {
+            ((Dispatcher)disp).Print(((Aircraft)air).Speed, ((Aircraft)air).Height);
+        }
+
     }
 }
+//Hp=7*Скорость (км/ч) – N,
