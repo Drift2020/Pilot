@@ -49,17 +49,14 @@ namespace _24_7
                 Console.WriteLine("Name: {0} / Recomend height: {1}", Name, recommended_height);
             }
           
-            if (   ((height- recommended_height > 300 && height - recommended_height>=0)    && (height - recommended_height <= 600 && height - recommended_height >= 0)) 
-                && ((height - recommended_height > -300 && height - recommended_height < 0) && (height - recommended_height <= -600 && height - recommended_height < 0))
-                && Flight_start)
+            if ((height- recommended_height > 300 && height - recommended_height <= 600 )&& Flight_start)
             {
                 Score += 25;
             }
-            //else if((height - recommended_height > 600|| height - recommended_height > -600) && (height - recommended_height <= 1000|| height - recommended_height <= -1000) 
-            //    && Flight_start )
-            //{
-            //    Score += 50;
-            //}
+            else if (height - recommended_height > 600  && height - recommended_height <= 1000 && Flight_start)
+            {
+                Score += 50;
+            }
             else if((height - recommended_height >1000) && Flight_start)
             {              
                 throw new Exception("The plane crashed!");
